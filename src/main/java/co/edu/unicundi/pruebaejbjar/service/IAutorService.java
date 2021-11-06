@@ -5,7 +5,7 @@
  */
 package co.edu.unicundi.pruebaejbjar.service;
 
-import co.edu.unicundi.pruebaejbjar.entity.Alumno;
+
 import co.edu.unicundi.pruebaejbjar.entity.Autor;
 import co.edu.unicundi.pruebaejbjar.exception.BussinessException;
 import co.edu.unicundi.pruebaejbjar.exception.ResourceNotFoundException;
@@ -19,7 +19,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface IAutorService {
-    public void guardar(Autor obj);
+    public void guardar(Autor obj)throws CloneNotSupportedException;
     public List<Autor> listar();
     public Autor listarPorId(Integer id) throws ResourceNotFoundException;
     public void editar(Autor obj);

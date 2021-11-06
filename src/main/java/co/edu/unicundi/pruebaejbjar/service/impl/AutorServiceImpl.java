@@ -21,13 +21,14 @@ public class AutorServiceImpl implements IAutorService{
     public IAutorRepo repo;
     
     @Override
-    public void guardar(Autor obj) {
-        if (obj.getLibro() != null && !obj.getLibro().isEmpty()) { //Vacio pero negado si trae información
-            for (Libro libro : obj.getLibro()) { //Doble referencia, a cada libro se le setea el autor
-                libro.setAutor(obj);
-            }
+    public void guardar(Autor obj) throws CloneNotSupportedException {
+        int respuesta=this.repo.validarExistencia(obj.getIdentificacion());
+        System.out.println(respuesta);
+        if(respuesta==1){
+         this.repo.guardar(obj);
+        }else{
+            throw new CloneNotSupportedException("La identificacion ingresada ya esta registrada con otro usuario");  
         }
-        this.repo.guardar(obj);
     }
 
     @Override
