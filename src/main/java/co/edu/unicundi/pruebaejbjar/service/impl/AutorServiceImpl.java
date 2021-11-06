@@ -22,13 +22,18 @@ public class AutorServiceImpl implements IAutorService{
     public IAutorRepo repo;
     
     @Override
-    public void guardar(Autor obj) {
-        if (obj.getLibro() != null && !obj.getLibro().isEmpty()) { //Vacio pero negado si trae información
-            for (Libro libro : obj.getLibro()) { //Doble referencia, a cada libro se le setea el autor
-                libro.setAutor(obj);
+    public void guardar(Autor obj) throws CloneNotSupportedException {
+        int respuesta = this.repo.validarExistencia(obj.getIdentificacion());
+        
+        if(respuesta == 0){
+            if (obj.getLibro() != null && !obj.getLibro().isEmpty()){
+                for (Libro l: obj.getLibro())
+                    l.setAutor(obj); 
             }
+            this.repo.guardar(obj);
+        }else{
+            throw new CloneNotSupportedException("La identificacion ingresada ya esta registrada con otro usuario");  
         }
-        this.repo.guardar(obj);
     }
 
     @Override
@@ -56,7 +61,7 @@ public class AutorServiceImpl implements IAutorService{
 
     @Override
     public Autor listarPorId(Integer id) throws ResourceNotFoundException{
-        int conteo = repo.validarExistencia(id);
+        int conteo = repo.validarExistenciaPorId(id);
         
         if (conteo == 1)
             return repo.listarPorId(id);

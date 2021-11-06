@@ -58,15 +58,23 @@ public class AutorRepoImpl implements IAutorRepo{
     public List<VistaAutorLibro> obtener() {
         TypedQuery<VistaAutorLibro> query = em.createNamedQuery("VistaAutor.Listar", VistaAutorLibro.class);
         return query.getResultList();
+    }  
+
+    @Override
+    public int validarExistencia(String identificacion) {
+        Query query = em.createNamedQuery("Autor.BuscarId");
+        query.setParameter("identificacion", identificacion);
+        Number validador = (Number) query.getSingleResult();
+        int respuesta = validador.intValue();
+        return respuesta;
     }
 
     @Override
-    public int validarExistencia(Integer id) {
+    public int validarExistenciaPorId(Integer id) {
         Query query = em.createNamedQuery("Autor.ContarId");
         query.setParameter("id", id);
         Number validador = (Number) query.getSingleResult();
         int respuesta = validador.intValue();
         return respuesta;
     }
-    
 }
