@@ -5,6 +5,7 @@
  */
 package co.edu.unicundi.pruebaejbjar.service;
 
+import co.edu.unicundi.pruebaejbjar.dto.AutorDto;
 import co.edu.unicundi.pruebaejbjar.entity.Alumno;
 import co.edu.unicundi.pruebaejbjar.entity.Autor;
 import co.edu.unicundi.pruebaejbjar.exception.BussinessException;
@@ -25,4 +26,5 @@ public interface IAutorService {
     public void editar(Autor obj);
     public void eliminar(Integer id) throws ResourceNotFoundException;
     public List<VistaAutorLibro> obtener();
+    public List<AutorDto> listarModelMaper();
 }

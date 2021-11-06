@@ -1,5 +1,6 @@
 package co.edu.unicundi.pruebaejbjar.service.impl;
 
+import co.edu.unicundi.pruebaejbjar.dto.AutorDto;
 import co.edu.unicundi.pruebaejbjar.entity.Autor;
 import co.edu.unicundi.pruebaejbjar.entity.Libro;
 import co.edu.unicundi.pruebaejbjar.exception.ResourceNotFoundException;
@@ -47,12 +48,18 @@ public class AutorServiceImpl implements IAutorService{
         
         return listaAutor;
     }
+    
+    @Override
+    public List<AutorDto> listarModelMaper() {
+        return this.repo.listarTodosModelMaper();
+    }
 
     @Override
     public Autor listarPorId(Integer id) throws ResourceNotFoundException{
-        Autor autor = repo.listarPorId(id);
-        if (autor != null)
-            return autor;
+        int conteo = repo.validarExistencia(id);
+        
+        if (conteo == 1)
+            return repo.listarPorId(id);
         else
             throw new ResourceNotFoundException("Autor no encontrado");
     }

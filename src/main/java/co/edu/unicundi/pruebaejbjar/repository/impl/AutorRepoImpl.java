@@ -1,14 +1,12 @@
 package co.edu.unicundi.pruebaejbjar.repository.impl;
 
-import co.edu.unicundi.pruebaejbjar.entity.Alumno;
+import co.edu.unicundi.pruebaejbjar.dto.AutorDto;
 import co.edu.unicundi.pruebaejbjar.entity.Autor;
 import co.edu.unicundi.pruebaejbjar.repository.IAutorRepo;
 import co.edu.unicundi.pruebaejbjar.view.VistaAutorLibro;
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 
 /**
  *
@@ -27,14 +25,23 @@ public class AutorRepoImpl implements IAutorRepo{
 
     @Override
     public List<Autor> listarTodos() {
-        TypedQuery<Autor> query = em.createNamedQuery("Autor.ListarTodos", Autor.class);
-        //TypedQuery<Autor> query = em.createNamedQuery("Autor.ListarTodosSinLibro", Autor.class);
+        //TypedQuery<Autor> query = em.createNamedQuery("Autor.ListarTodos", Autor.class);
+        TypedQuery<Autor> query = em.createNamedQuery("Autor.ListarTodosSinLibro", Autor.class);
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<AutorDto> listarTodosModelMaper() {
+        TypedQuery<AutorDto> query = em.createNamedQuery("Autor.ListarTodos", AutorDto.class);
         return query.getResultList();
     }
 
     @Override
     public Autor listarPorId(Integer id) {
-        return em.find(Autor.class, id);
+        Query query = em.createNamedQuery("Autor.ListarPorId");
+        query.setParameter("id", id);
+        Autor autor = (Autor) query.getSingleResult();
+        return autor;
     }
 
     @Override
@@ -51,6 +58,15 @@ public class AutorRepoImpl implements IAutorRepo{
     public List<VistaAutorLibro> obtener() {
         TypedQuery<VistaAutorLibro> query = em.createNamedQuery("VistaAutor.Listar", VistaAutorLibro.class);
         return query.getResultList();
+    }
+
+    @Override
+    public int validarExistencia(Integer id) {
+        Query query = em.createNamedQuery("Autor.ContarId");
+        query.setParameter("id", id);
+        Number validador = (Number) query.getSingleResult();
+        int respuesta = validador.intValue();
+        return respuesta;
     }
     
 }
