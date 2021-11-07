@@ -16,7 +16,7 @@ public interface IAutorService {
     public void guardar(Autor obj)throws CloneNotSupportedException;
     public List<Autor> listar();
     public Autor listarPorId(Integer id) throws ResourceNotFoundException;
-    public void editar(Autor obj);
+    public void editar(Autor obj) throws CloneNotSupportedException;
     public void eliminar(Integer id) throws ResourceNotFoundException;
     public List<VistaAutorLibro> obtener();
     public List<AutorDto> listarModelMaper();

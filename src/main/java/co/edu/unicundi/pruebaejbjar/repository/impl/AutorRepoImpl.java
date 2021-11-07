@@ -38,7 +38,7 @@ public class AutorRepoImpl implements IAutorRepo{
 
     @Override
     public Autor listarPorId(Integer id) {
-        Query query = em.createNamedQuery("Autor.ListarPorId");
+        Query query = em.createNamedQuery("Autor.ListarPorId", Autor.class);
         query.setParameter("id", id);
         Autor autor = (Autor) query.getSingleResult();
         return autor;
@@ -46,7 +46,14 @@ public class AutorRepoImpl implements IAutorRepo{
 
     @Override
     public void editar(Autor obj) {
-        this.em.merge(obj);
+        //this.em.merge(obj);
+        Query query = em.createNamedQuery("Autor.Editar", Autor.class);
+        query.setParameter("identificacion", obj.getIdentificacion());
+        query.setParameter("nombre", obj.getNombre());
+        query.setParameter("apellido", obj.getApellido());
+        query.setParameter("edad", obj.getEdad());
+        query.setParameter("id", obj.getId());
+        query.executeUpdate();
     }
 
     @Override

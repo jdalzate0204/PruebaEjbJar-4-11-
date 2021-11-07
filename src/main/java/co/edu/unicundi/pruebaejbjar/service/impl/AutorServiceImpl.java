@@ -70,10 +70,17 @@ public class AutorServiceImpl implements IAutorService{
     }
 
     @Override
-    public void editar(Autor obj) {
+    public void editar(Autor obj) throws CloneNotSupportedException{
         //obj.setLibro(null); //Elimina los libros del autor
         //Solución, hacer querys de edicion o quitar la cascada
-        this.repo.editar(obj);
+        int respuesta = this.repo.validarExistencia(obj.getIdentificacion());
+        Autor autor = this.repo.listarPorId(obj.getId());
+        
+        if (autor == obj) {
+            obj.setLibro(obj.getLibro()); 
+            this.repo.editar(obj);
+        } else 
+            throw new CloneNotSupportedException("La identificacion ingresada ya esta registrada con otro usuario");
     }
 
     @Override
