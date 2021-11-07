@@ -7,9 +7,12 @@ import co.edu.unicundi.pruebaejbjar.exception.ResourceNotFoundException;
 import co.edu.unicundi.pruebaejbjar.repository.IAutorRepo;
 import co.edu.unicundi.pruebaejbjar.service.IAutorService;
 import co.edu.unicundi.pruebaejbjar.view.VistaAutorLibro;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionRolledbackLocalException;
+import javax.validation.ConstraintViolation;
 
 /**
  *
@@ -23,25 +26,32 @@ public class AutorServiceImpl implements IAutorService{
     
     @Override
     public void guardar(Autor obj) throws CloneNotSupportedException {
-        int respuesta = this.repo.validarExistencia(obj.getIdentificacion());
+        /*HashMap<String, String> errores = new HashMap();
         
-        if(respuesta == 0){
-            if (obj.getLibro() != null && !obj.getLibro().isEmpty()){
-                for (Libro l: obj.getLibro())
-                    l.setAutor(obj); 
+        for (ConstraintViolation error: obj.validar())
+            errores.put(error.getPropertyPath().toString(), error.getMessage());
+
+        if (errores.size() > 0)
+            throw new TransactionRolledbackLocalException(errores.toString());
+        else {*/
+            int respuesta = this.repo.validarExistencia(obj.getIdentificacion());
+            
+            if(respuesta == 0){
+                if (obj.getLibro() != null && !obj.getLibro().isEmpty()){
+                    for (Libro l: obj.getLibro())
+                        l.setAutor(obj); 
+                }
+                this.repo.guardar(obj);
+            }else{
+                throw new CloneNotSupportedException("La identificacion ingresada ya esta registrada con otro usuario");  
             }
-            this.repo.guardar(obj);
-        }else{
-            throw new CloneNotSupportedException("La identificacion ingresada ya esta registrada con otro usuario");  
-        }
+        //}
     }
 
     @Override
     public List<Autor> listar() {
         List<Autor> listaAutor = repo.listarTodos();
-        
-        
-        
+
         //No se debe haccer
         /*for (Autor a: listaAutor){
             a.getLibro().clear();
