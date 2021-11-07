@@ -26,7 +26,7 @@ public class AutorRepoImpl implements IAutorRepo{
     @Override
     public List<Autor> listarTodos() {
         //TypedQuery<Autor> query = em.createNamedQuery("Autor.ListarTodos", Autor.class);
-        TypedQuery<Autor> query = em.createNamedQuery("Autor.ListarTodosSinLibro", Autor.class);
+        TypedQuery<Autor> query = em.createNamedQuery("Autor.ListarTodosSinLibro", Autor.class);        
         return query.getResultList();
     }
     
@@ -38,10 +38,15 @@ public class AutorRepoImpl implements IAutorRepo{
 
     @Override
     public Autor listarPorId(Integer id) {
-        Query query = em.createNamedQuery("Autor.ListarPorId", Autor.class);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+     
+    @Override
+    public List<Autor> listarId(Integer id) {
+        TypedQuery<Autor> query = em.createNamedQuery("Autor.ListarPorId",Autor.class);
         query.setParameter("id", id);
-        Autor autor = (Autor) query.getSingleResult();
-        return autor;
+        List<Autor> lAutor = query.getResultList(); 
+        return lAutor;
     }
 
     @Override

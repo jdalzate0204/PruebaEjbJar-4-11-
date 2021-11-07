@@ -16,4 +16,5 @@ public interface IAutorRepo extends ICrud<Autor, Integer>{
     public int validarExistenciaPorId(Integer id);
     public List<AutorDto> listarTodosModelMaper();
     public int validarExistencia(String identificacion);
+    public List<Autor> listarId(Integer id);
 }

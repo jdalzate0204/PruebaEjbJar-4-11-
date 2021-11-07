@@ -20,4 +20,5 @@ public interface IAutorService {
     public void eliminar(Integer id) throws ResourceNotFoundException;
     public List<VistaAutorLibro> obtener();
     public List<AutorDto> listarModelMaper();
+    public List<Autor> listarId(Integer id) throws ResourceNotFoundException;
 }

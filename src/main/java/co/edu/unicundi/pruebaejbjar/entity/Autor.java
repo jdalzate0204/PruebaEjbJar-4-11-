@@ -13,9 +13,11 @@ import javax.persistence.*;
 
 @NamedQueries({
     @NamedQuery(name = "Autor.ListarTodos", query = "SELECT a FROM Autor a"),    
-    @NamedQuery(name = "Autor.ListarTodosSinLibro", query = "SELECT a.id, a.identificacion, a.nombre, a.apellido, a.edad FROM Autor a"),
+    @NamedQuery(name = "Autor.ListarTodosSinLibro", query = "SELECT NEW co.edu.unicundi.pruebaejbjar.dto.AutorDto"
+            + "(a.id, a.identificacion, a.nombre, a.apellido, a.edad) FROM Autor a"),
     @NamedQuery(name = "Autor.BuscarId", query = "SELECT count (a.identificacion) FROM Autor a WHERE a.identificacion = :identificacion"),
-    @NamedQuery(name = "Autor.ListarPorId", query = "SELECT a FROM Autor a WHERE a.id = :id"),
+    @NamedQuery(name = "Autor.ListarPorId", query = "SELECT NEW co.edu.unicundi.pruebaejbjar.dto.AutorDto"
+            + "(a.id, a.identificacion, a.nombre, a.apellido, a.edad) FROM Autor a WHERE a.id = :id"),
     @NamedQuery(name = "Autor.ContarId", query = "SELECT COUNT(a.id) FROM Autor a WHERE a.id = :id"),
     @NamedQuery(name = "Autor.Editar", query = "UPDATE Autor "
             + "SET identificacion = :identificacion, nombre = :nombre, apellido = :apellido, edad = :edad WHERE id = :id")
@@ -46,7 +48,8 @@ public class Autor implements Serializable{
     public Autor() {
     }
 
-    public Autor(String identificacion, String nombre, String apellido, Integer edad, List<Libro> libro) {
+    public Autor(Integer id, String identificacion, String nombre, String apellido, Integer edad, List<Libro> libro) {
+        this.id = id;
         this.identificacion = identificacion;
         this.nombre = nombre;
         this.apellido = apellido;

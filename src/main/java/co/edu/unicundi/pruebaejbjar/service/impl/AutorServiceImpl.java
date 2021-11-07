@@ -40,6 +40,8 @@ public class AutorServiceImpl implements IAutorService{
     public List<Autor> listar() {
         List<Autor> listaAutor = repo.listarTodos();
         
+        
+        
         //No se debe haccer
         /*for (Autor a: listaAutor){
             a.getLibro().clear();
@@ -68,6 +70,16 @@ public class AutorServiceImpl implements IAutorService{
         else
             throw new ResourceNotFoundException("Autor no encontrado");
     }
+    
+    @Override
+    public List<Autor> listarId(Integer id) throws ResourceNotFoundException {
+        int conteo = repo.validarExistenciaPorId(id);
+        
+        if (conteo == 1)
+            return repo.listarId(id);
+        else
+            throw new ResourceNotFoundException("Autor no encontrado");
+    }
 
     @Override
     public void editar(Autor obj) throws CloneNotSupportedException{
@@ -76,11 +88,12 @@ public class AutorServiceImpl implements IAutorService{
         int respuesta = this.repo.validarExistencia(obj.getIdentificacion());
         Autor autor = this.repo.listarPorId(obj.getId());
         
-        if (autor == obj) {
+        if ((respuesta == 0) || ((autor.getId() == obj.getId()) && (autor.getIdentificacion().equals(obj.getIdentificacion())))) {
             obj.setLibro(obj.getLibro()); 
             this.repo.editar(obj);
         } else 
             throw new CloneNotSupportedException("La identificacion ingresada ya esta registrada con otro usuario");
+        
     }
 
     @Override
