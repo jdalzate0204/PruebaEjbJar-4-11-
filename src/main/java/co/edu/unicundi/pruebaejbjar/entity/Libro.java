@@ -11,7 +11,11 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  */
 @Entity //Indica que es un objeto persistente a la bbdd
 @Table (name = "libro")
-public class Libro implements Serializable{
+
+@NamedQueries({
+    @NamedQuery(name = "Libro.ListarTodos", query = "SELECT l FROM Libro l ORDER BY l.id")
+})
+public class Libro implements Serializable {
     @Id //LLave primaria
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -28,6 +32,9 @@ public class Libro implements Serializable{
     @ManyToOne
     @JoinColumn(name = "id_autor", nullable = false)
     private Autor autor;
+    
+    /*@Transient //NoMapped
+    private Integer idAutor;*/
 
     public Libro() {
     }
@@ -80,4 +87,12 @@ public class Libro implements Serializable{
     public void setAutor(Autor autor) {
         this.autor = autor;
     }
+
+    /*public Integer getIdAutor() {
+        return idAutor;
+    }
+
+    public void setIdAutor(Integer idAutor) {
+        this.idAutor = idAutor;
+    }*/
 }
